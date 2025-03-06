@@ -1,0 +1,61 @@
+using UnityEngine;
+
+public class Tree : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created 
+    [SerializeField] float moveSpeed; 
+    int r ;
+    GameObject ScoreGameObject;
+    [SerializeField]float Score;
+    int ChallengeStage = 0;
+    
+
+    void Start()
+    {
+        moveSpeed = 10f;
+        ScoreGameObject = GameObject.FindGameObjectWithTag("Score");
+        Score = ScoreGameObject.GetComponent<Player>().ScoreTree;
+        ChallengeStage = 0;
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+            transform.Translate(-moveSpeed*Time.deltaTime,0,0);
+            if(transform.position.x<-15f)
+            {
+    
+                Destroy(gameObject);
+
+                
+            }
+    if(Score >=30 && ChallengeStage ==0)
+    {
+        moveSpeed = 15f;
+        Debug.Log("Challenge1");
+        ChallengeStage =1;
+        
+    }
+    else if(Score>=50 && ChallengeStage ==1)
+    {
+        moveSpeed = 20f;
+        Debug.Log("Challenge2");
+        ChallengeStage =2;
+    }
+    else if(Score>=80 && ChallengeStage ==2)
+    {
+        moveSpeed = 30f;
+        Debug.Log("Challenge3");
+        ChallengeStage =3;
+    }
+        
+
+
+
+
+    }
+
+}
