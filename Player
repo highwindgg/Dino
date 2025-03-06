@@ -1,0 +1,123 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class Player : MonoBehaviour
+{
+
+    [SerializeField] float moveSpeed = 0f;
+    int r = 0;
+    [SerializeField]int HP = 0;
+    [SerializeField]Text scoreText;
+    float score;
+    int scoreL;
+    public float ScoreTree;
+    [SerializeField]Text HPText;
+    [SerializeField]GameObject StartHint;
+    [SerializeField]GameObject ReplayButton;
+
+
+
+void Start()
+    {
+        moveSpeed = 0f;
+        HP = 3;
+        score = 0;
+
+
+
+    }
+
+    // Update is called once per frame
+void Update()
+{
+        if(Input.GetKey(KeyCode.Space))
+
+        {
+
+            if(r ==1)
+            {
+
+                moveSpeed = 10f;
+                r = 0;
+                StartHint.SetActive(false);
+            }
+        }
+        if(moveSpeed>0)
+        {   
+                transform.Translate(0,moveSpeed*Time.deltaTime,0);
+                
+                moveSpeed -= Time.deltaTime;
+ 
+        }
+        if(moveSpeed<9.5f)
+        {
+            moveSpeed = 0;
+        
+        }
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.position = new Vector3(-8.4f,-3.39f,0);
+        }
+
+    upateScore();
+    updateHP();
+    ScoreTree+=Time.deltaTime*1;
+    
+
+        
+    }
+void OnCollisionEnter2D(Collision2D other) 
+    {
+            if (other.gameObject.tag == "Floor")
+            {
+                r = 1;
+                
+            }
+
+
+    }
+void OnTriggerEnter2D(Collider2D other) 
+{
+    if(other.gameObject.tag =="Tree")
+    {
+        ModifyHP(-1);
+    }
+}
+void ModifyHP(int num)
+{
+    HP += num;
+    if(HP>10)
+    {
+        HP = 10;
+
+    }
+    else if(HP<=0)
+    {
+        HP = 0;
+        die();
+    }
+}
+void upateScore()
+{
+    score += Time.deltaTime;
+    scoreText.text = "Score"+score.ToString();
+    
+}
+void updateHP()
+{
+    HPText.text = "HP"+HP.ToString();
+    
+}
+void die()
+{
+    Time.timeScale = 0;
+    ReplayButton.SetActive(true);
+}
+public void Replay()
+{
+    Time.timeScale=1f;
+    SceneManager.LoadScene("SampleScene");
+}
+}
+
